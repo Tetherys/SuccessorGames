@@ -116,6 +116,10 @@ public class UIGrid : MonoBehaviour
 		}
 
 		UIDraggablePanel drag = NGUITools.FindInParents<UIDraggablePanel>(gameObject);
-		if (drag != null) drag.UpdateScrollbars(true);
+
+		if (drag != null) { 
+			drag.ResetPosition ();
+			drag.UpdateScrollbars (true);
+		}
 	}
 }

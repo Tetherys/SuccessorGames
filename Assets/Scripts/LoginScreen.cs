@@ -21,11 +21,16 @@ public class LoginScreen : MenuScreen {
 	// Update is called once per frame
 	void Update () {
 
+		if(Input.GetKeyDown(KeyCode.Escape) )
+		{
+			Application.Quit();
+		}
 	}
 
 	public void login()
 	{
 		Debug.Log (username.text + emailaddress.text);
+		Application.LoadLevel("MainScene");
 	}
 
 	public void OnLoginCheckBoxActivate()
@@ -38,6 +43,9 @@ public class LoginScreen : MenuScreen {
 		this.CheckBoxSwapper (registerCheckBox, loginCheckBox);
 	}
 
+	/*
+	 * Swaps 2 checkboxes from active to unactive or vice versa, so that 1 of the checkboxes is always active 
+	 */
 	private void CheckBoxSwapper(UICheckbox active, UICheckbox unactive)
 	{
 		if(active != null)
@@ -58,6 +66,13 @@ public class LoginScreen : MenuScreen {
 			}
 		}
 	}
-
+		
+	/*
+	 * 
+	 */
+	public void OnLoginButtonClicked()
+	{
+		Application.LoadLevel("MainScene");
+	}
 
 }
