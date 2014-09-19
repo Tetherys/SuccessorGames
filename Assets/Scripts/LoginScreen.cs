@@ -1,23 +1,39 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
+using com.shephertz.app42.paas.sdk.csharp;
+using com.shephertz.app42.paas.sdk.csharp.user;
 
-public class LoginScreen : MenuScreen {
 
-	private UIInput username;
-	private UIInput emailaddress;
-	private UIInput password;
+public class LoginScreen : MenuScreen, App42CallBack {
+
+	private GameObject username;
+	private GameObject emailaddress;
+	private GameObject emailaddressLabel;
+	private GameObject password;
+
 	private UICheckbox loginCheckBox;
 	private UICheckbox registerCheckBox;
+
+	private NetworkService networkService;
+
+	private UILabel errorMessage;
 	
 	// Use this for initialization
 	void Start () {
-		username = GameObject.Find ("UserNameInput").GetComponent<UIInput> ();
-		emailaddress = GameObject.Find ("EmailInput").GetComponent<UIInput> ();
-		password = GameObject.Find ("PasswordInput").GetComponent<UIInput> ();
+		username = GameObject.Find ("UserNameInput");
+		emailaddress = GameObject.Find ("EmailInput");
+		emailaddressLabel = GameObject.Find ("EmailLabel");
+		password = GameObject.Find ("PasswordInput");
 		loginCheckBox = GameObject.Find ("LoginCheckBox").GetComponent<UICheckbox> ();
 		registerCheckBox = GameObject.Find ("RegisterCheckBox").GetComponent<UICheckbox> ();
+		networkService = GameObject.Find ("NetworkService").GetComponent<NetworkService> ();
+		errorMessage = GameObject.Find ("ErrorMessageLabel").GetComponent<UILabel>();
+		networkService.setResultLabel (errorMessage);
+
+		this.SetEmailAdressInput (false);
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
 
@@ -25,22 +41,82 @@ public class LoginScreen : MenuScreen {
 		{
 			Application.Quit();
 		}
+
 	}
 
-	public void login()
+	/*
+	 * Called when the submit button is clicked
+	 */
+	public void Submit()
 	{
-		Debug.Log (username.text + emailaddress.text);
-		Application.LoadLevel("MainScene");
+		string user = username.GetComponent<UIInput> ().text;
+		string pw = password.GetComponent<UIInput> ().text;
+		string email = emailaddress.GetComponent<UIInput> ().text;
+
+		if(registerCheckBox.isChecked == true)
+		{
+			networkService.CreateUser (user, email, pw, this);
+		}
+		else
+		{
+			networkService.Authenticate(user, pw);
+		}
+
+
+
+		//Application.LoadLevel("MainScene");
 	}
 
+	/*
+	 * 
+	 */
+	public void Login()
+	{
+		
+	}
+
+	/*
+	 * 
+	 */
+	public void Register()
+	{
+		
+	}
+
+	/*
+	 * Called when the login checkbox is pressed
+	 */
 	public void OnLoginCheckBoxActivate()
 	{
 		this.CheckBoxSwapper (loginCheckBox, registerCheckBox);
 	}
 
+	/*
+	 * Called when the register checkbox is pressed
+	 */
 	public void OnRegisterCheckBoxActivate()
 	{
 		this.CheckBoxSwapper (registerCheckBox, loginCheckBox);
+		if(registerCheckBox != null)
+		{
+			if(registerCheckBox.isChecked == true)
+			{
+				this.SetEmailAdressInput(true);
+			}
+			else
+			{
+				this.SetEmailAdressInput(false);
+			}
+		}
+	}
+
+	/*
+	 * shows/hides the emailaddres label and input
+	 */ 
+	private void SetEmailAdressInput(bool active)
+	{
+		NGUITools.SetActive (emailaddress, active);
+		NGUITools.SetActive (emailaddressLabel, active);
 	}
 
 	/*
@@ -66,13 +142,18 @@ public class LoginScreen : MenuScreen {
 			}
 		}
 	}
-		
-	/*
-	 * 
-	 */
-	public void OnLoginButtonClicked()
+
+	#region App42CallBack implementation
+
+	public void OnSuccess (object response)
 	{
-		Application.LoadLevel("MainScene");
+		throw new NotImplementedException ();
 	}
 
+	public void OnException (Exception ex)
+	{
+		throw new NotImplementedException ();
+	}
+
+	#endregion
 }
