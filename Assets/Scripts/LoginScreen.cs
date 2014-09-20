@@ -5,7 +5,7 @@ using com.shephertz.app42.paas.sdk.csharp;
 using com.shephertz.app42.paas.sdk.csharp.user;
 
 
-public class LoginScreen : MenuScreen, App42CallBack {
+public class LoginScreen : MenuScreen {
 
 	private GameObject username;
 	private GameObject emailaddress;
@@ -14,8 +14,6 @@ public class LoginScreen : MenuScreen, App42CallBack {
 
 	private UICheckbox loginCheckBox;
 	private UICheckbox registerCheckBox;
-
-	private NetworkService networkService;
 
 	private UILabel errorMessage;
 	
@@ -27,9 +25,8 @@ public class LoginScreen : MenuScreen, App42CallBack {
 		password = GameObject.Find ("PasswordInput");
 		loginCheckBox = GameObject.Find ("LoginCheckBox").GetComponent<UICheckbox> ();
 		registerCheckBox = GameObject.Find ("RegisterCheckBox").GetComponent<UICheckbox> ();
-		networkService = GameObject.Find ("NetworkService").GetComponent<NetworkService> ();
 		errorMessage = GameObject.Find ("ErrorMessageLabel").GetComponent<UILabel>();
-		networkService.setResultLabel (errorMessage);
+		NetworkService.getInstance().ResultLabel = errorMessage;
 
 		this.SetEmailAdressInput (false);
 	}
@@ -55,15 +52,12 @@ public class LoginScreen : MenuScreen, App42CallBack {
 
 		if(registerCheckBox.isChecked == true)
 		{
-			networkService.CreateUser (user, email, pw, this);
+			NetworkService.getInstance().CreateUser (user, email, pw);
 		}
 		else
 		{
-			networkService.Authenticate(user, pw);
+			NetworkService.getInstance().Authenticate(user, pw);
 		}
-
-
-
 		//Application.LoadLevel("MainScene");
 	}
 
@@ -142,18 +136,5 @@ public class LoginScreen : MenuScreen, App42CallBack {
 			}
 		}
 	}
-
-	#region App42CallBack implementation
-
-	public void OnSuccess (object response)
-	{
-		throw new NotImplementedException ();
-	}
-
-	public void OnException (Exception ex)
-	{
-		throw new NotImplementedException ();
-	}
-
-	#endregion
+	
 }
