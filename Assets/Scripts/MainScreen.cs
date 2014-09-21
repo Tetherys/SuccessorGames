@@ -5,10 +5,12 @@ public class MainScreen : MenuScreen {
 
 	public GameObject gameList;
 	public GameObject gameListItemPrefab;
+	private UILabel gameListLabel;
 
 	// Use this for initialization
 	void Start () {
-
+		gameListLabel = GameObject.Find ("GameListLabel").GetComponent<UILabel>();
+		gameListLabel.text = NetworkService.getInstance().User.GetUserName() + "'s games";
 	}
 	
 	// Update is called once per frame

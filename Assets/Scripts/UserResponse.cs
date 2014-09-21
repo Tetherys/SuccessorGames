@@ -19,6 +19,7 @@ public class UserResponse : App42CallBack {
 			{
 				User userObj = (User)response;
 				result = userObj.ToString();
+				NetworkService.getInstance().User = userObj;
 				if(String.IsNullOrEmpty(userObj.GetSessionId()))
 				{
 					errorLabel.color = Color.green;

@@ -39,7 +39,7 @@ public class NetworkService {
 	{
 		try
 		{
-			userService.CreateUser (username,password,emailadress, new UserResponse());
+			userService.CreateUser (username,password,emailadress, userResponse);
 		}
 		catch(App42Exception e)
 		{
@@ -52,7 +52,7 @@ public class NetworkService {
 	{
 		try
 		{
-			userService.Authenticate(username, password, new UserResponse());
+			userService.Authenticate(username, password, userResponse);
 		}
 		catch(App42Exception e)
 		{
