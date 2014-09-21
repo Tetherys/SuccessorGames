@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MainScreen : MenuScreen {
+public class MainScreen : MonoBehaviour {
 
 	public GameObject gameList;
 	public GameObject gameListItemPrefab;

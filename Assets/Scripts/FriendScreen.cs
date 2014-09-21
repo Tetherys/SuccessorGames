@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class FriendScreen : MenuScreen {
+public class FriendScreen : MonoBehaviour {
 
 	public GameObject friendListItemPrefab;
 	public GameObject friendList;

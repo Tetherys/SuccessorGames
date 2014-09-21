@@ -5,7 +5,7 @@ using com.shephertz.app42.paas.sdk.csharp;
 using com.shephertz.app42.paas.sdk.csharp.user;
 
 
-public class LoginScreen : MenuScreen {
+public class LoginScreen : MonoBehaviour, App42CallBack{
 
 	private GameObject username;
 	private GameObject emailaddress;
@@ -52,11 +52,11 @@ public class LoginScreen : MenuScreen {
 
 		if(registerCheckBox.isChecked == true)
 		{
-			NetworkService.getInstance().CreateUser (user, email, pw);
+			NetworkService.getInstance().CreateUser(user, email, pw, this);
 		}
 		else
 		{
-			NetworkService.getInstance().Authenticate(user, pw);
+			NetworkService.getInstance().Authenticate(user, pw, this);
 		}
 		//Application.LoadLevel("MainScene");
 	}
@@ -137,4 +137,55 @@ public class LoginScreen : MenuScreen {
 		}
 	}
 	
+	#region App42CallBack implementation
+	public void OnSuccess (object response)
+	{
+		try
+		{
+			if(response is User)
+			{
+				User userObj = (User)response;
+				NetworkService.getInstance().User = userObj;
+				if(String.IsNullOrEmpty(userObj.GetSessionId()))
+				{
+					errorMessage.color = Color.green;
+					errorMessage.text = "Succesfully created account with username: " + userObj.GetUserName();
+				}
+				else
+				{
+					Application.LoadLevel("MainScene");
+				}
+			}
+		}
+		catch(App42Exception e)
+		{
+			errorMessage.text = e.Message;
+		}
+	}
+	public void OnException (Exception ex)
+	{
+		errorMessage.text = "";
+		App42Exception exception = (App42Exception)ex;
+		int errorCode = exception.GetAppErrorCode ();
+		switch (errorCode) 
+		{
+		case NetworkService.ERRORCODE_USERNAME_EXISTS:
+			errorMessage.text = "Username already taken";
+			break;
+		case NetworkService.ERRORCODE_EMAILADRESS_EXISTS:
+			errorMessage.text = "EmailAdress already taken";
+			break;
+		case NetworkService.ERRORCODE_INVALID_USERNAME_PASSWORD:
+			errorMessage.text = "Username/password dont match";
+			break;
+		case NetworkService.ERRORCODE_SERVERERROR:
+			errorMessage.text = "No connection to the server";
+			break;
+		case NetworkService.ERRORCODE_NOINTERNET:
+			errorMessage.text = "Check your internet connection";
+			break;
+		}
+
+	}
+	#endregion
 }
