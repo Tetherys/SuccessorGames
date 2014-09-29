@@ -12,12 +12,13 @@ public class GameManager : MonoBehaviour {
 	//persistence game data
 	private User user;
 	public const string DATABASE_NAME = "FRIENDS";
-	public const string GROUP_NAME = "Friends";
-	private List<string> friends = new List<string>();
+	public const string FRIEND_FILE_PATH = "/friends.json";
+
+	private HashSet<string> friends = new HashSet<string>();
 
 	// Use this for initialization
 	void Start () {
-	
+
 	}
 	
 	// Update is called once per frame
@@ -34,7 +35,6 @@ public class GameManager : MonoBehaviour {
 
 		instance = this;
 		networkService = new NetworkService ();
-
 		DontDestroyOnLoad (gameObject);
 	}
 
@@ -62,7 +62,7 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
-	public List<string> Friends {
+	public HashSet<string> Friends {
 		get {
 			return this.friends;
 		}
