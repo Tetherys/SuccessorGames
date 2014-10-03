@@ -16,7 +16,7 @@ public class FriendSceneManager : MonoBehaviour, App42CallBack{
 
 	// Use this for initialization
 	void Start () {
-		searchInput = GameObject.Find ("SearchFriendInput").GetComponent<UIInput> ();
+		searchInput = GameObject.Find ("FriendUsernameInput").GetComponent<UIInput> ();
 		errorLabel = GameObject.Find ("ErrorMessageLabel").GetComponent<UILabel> ();
 		if(File.Exists(Application.persistentDataPath + GameManager.FRIEND_FILE_PATH))
 		{
@@ -24,7 +24,7 @@ public class FriendSceneManager : MonoBehaviour, App42CallBack{
 		}
 		foreach(string friend in GameManager.instance.Friends)
 		{
-			AddFriendToFriendList(friend);
+			AddFriendListItemToFriendList(friend);
 		}
 	}
 	
@@ -34,6 +34,7 @@ public class FriendSceneManager : MonoBehaviour, App42CallBack{
 		{
 			Application.LoadLevel ("MainScene");
 		}
+		friendList.GetComponent<UIGrid>().Reposition ();
 	}
 
 	void OnDestroy()
@@ -50,7 +51,7 @@ public class FriendSceneManager : MonoBehaviour, App42CallBack{
 		{
 			if(friendName.Equals("tom"))
 			{
-				errorLabel.text = "cant make yourself a friend";
+				errorLabel.text = "can not add yourself";
 			}
 			else if(GameManager.instance.Friends.Contains(friendName))
 			{
@@ -58,37 +59,64 @@ public class FriendSceneManager : MonoBehaviour, App42CallBack{
 			}
 			else
 			{
-				GameManager.instance.Friends.Add(friendName);
-				this.AddFriendToFriendList(friendName);
-				this.WriteFriendsToFile (Application.persistentDataPath + GameManager.FRIEND_FILE_PATH);
+				GameManager.instance.NetworkService.UserService.GetUser(friendName, this);
 			}
 		}
 		else
 		{
 			errorLabel.text = "enter a username";
 		}
-		//GameManager.instance.NetworkService.UserService.GetUser(friendName, this);
 
 	}
 
-	private void AddFriendToFriendList(string friendName)
+	public void OnDeleteFriendButtonClicked(GameObject sender)
 	{
-		GameObject go = GameObject.Instantiate(friendListItemPrefab) as GameObject;
-		go.GetComponentInChildren<UILabel>().text = friendName;
+		string friendName = sender.transform.parent.GetComponentInChildren<UILabel> ().text;
+		GameManager.instance.Friends.Remove (friendName);
 
+		this.RemoveFriendListItemFromFriendList (sender);
+
+		this.WriteFriendsToFile (Application.persistentDataPath + GameManager.FRIEND_FILE_PATH);
+	}
+
+	public void OnStartGameButtonClicked(GameObject sender)
+	{
+		Debug.Log ("starting game with: " + sender.transform.parent.gameObject.GetComponentInChildren<UILabel>().text );
+	}
+
+	public void OnBackToMainButtonClicked() 
+	{
+		Application.LoadLevel ("MainScene");
+	}
+
+	private void RemoveFriendListItemFromFriendList(GameObject friendListItem)
+	{
+		Destroy (friendListItem.transform.parent.gameObject);	
+	}
+
+	private void AddFriendListItemToFriendList(string friendName)
+	{
+		GameObject go = this.PrepareFriendListItem (friendName);
+		
 		Transform t = go.transform;
 		t.parent = friendList.transform;
 		t.localPosition = Vector3.zero;
 		t.localRotation = Quaternion.identity;
 		t.localScale = Vector3.one;
 		go.layer = friendList.layer;
-
+		
 		friendList.GetComponent<UIGrid>().Reposition ();
 	}
-
-	public void OnBackToMainButtonClicked() 
+	
+	private GameObject PrepareFriendListItem(string friendName)
 	{
-
+		GameObject go = GameObject.Instantiate(friendListItemPrefab) as GameObject;
+		go.GetComponentInChildren<UILabel>().text = friendName;
+		foreach(UIButtonMessage button in go.GetComponentsInChildren<UIButtonMessage> ())
+		{
+			button.target = gameObject;
+		}
+		return go;
 	}
 
 	private void LoadFriendsFromFile(string path)
@@ -109,7 +137,10 @@ public class FriendSceneManager : MonoBehaviour, App42CallBack{
 	public void OnSuccess (object response)
 	{
 		errorLabel.text = "Friend added";
-
+		string friendName = searchInput.text;
+		GameManager.instance.Friends.Add(friendName);
+		this.AddFriendListItemToFriendList(friendName);
+		this.WriteFriendsToFile (Application.persistentDataPath + GameManager.FRIEND_FILE_PATH);
 	}
 
 	public void OnException (Exception ex)
@@ -128,7 +159,6 @@ public class FriendSceneManager : MonoBehaviour, App42CallBack{
 			errorLabel.text = "User not found";
 			break;
 		}
-
 
 		Debug.Log (e.Message);
 	}
