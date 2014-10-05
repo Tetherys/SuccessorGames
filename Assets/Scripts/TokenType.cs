@@ -1,0 +1,7 @@
+
+public enum TokenType
+{
+	DONKEY, COW, HORSE, LAMA, PIG, GOAT, CHICKEN, BONUS_3, BONUS_4, BONUS_5
+}
+
+

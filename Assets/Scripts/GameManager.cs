@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour {
 
 	//persistence game data
 	private User user;
+	private string opponentName;
 	public const string DATABASE_NAME = "FRIENDS";
 	public const string FRIEND_FILE_PATH = "/friends.json";
 
@@ -70,4 +71,14 @@ public class GameManager : MonoBehaviour {
 			friends = value;
 		}
 	}
+
+	public string OpponentName {
+		get {
+			return this.opponentName;
+		}
+		set {
+			opponentName = value;
+		}
+	}
+	
 }

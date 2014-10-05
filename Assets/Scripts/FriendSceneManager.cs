@@ -81,7 +81,9 @@ public class FriendSceneManager : MonoBehaviour, App42CallBack{
 
 	public void OnStartGameButtonClicked(GameObject sender)
 	{
-		Debug.Log ("starting game with: " + sender.transform.parent.gameObject.GetComponentInChildren<UILabel>().text );
+		string opponentName = sender.transform.parent.gameObject.GetComponentInChildren<UILabel> ().text;
+		GameManager.instance.OpponentName = opponentName;
+		Debug.Log ("starting game with: " + opponentName );
 	}
 
 	public void OnBackToMainButtonClicked() 
