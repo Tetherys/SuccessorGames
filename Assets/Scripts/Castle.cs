@@ -8,6 +8,7 @@ public class Castle {
 	private const int TOKEN_STACKS_TO_BE_DEPLETED = 3;
 
 	private Dictionary<TokenType, int[]> tokenStack;
+	private int depletedTokenStacks;
 
 	public Dictionary<TokenType, int[]> TokenStack {
 		get {
@@ -15,6 +16,16 @@ public class Castle {
 		}
 		set {
 			tokenStack = value;
+		}
+	}
+
+	[JsonIgnore]
+	public int DepletedTokenStacks {
+		get {
+			return this.depletedTokenStacks;
+		}
+		set {
+			depletedTokenStacks = value;
 		}
 	}
 }

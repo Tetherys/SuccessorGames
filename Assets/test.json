@@ -3,20 +3,20 @@
   "Turn": 1,
   "Market": {
     "MarketStack": {
-      "DONKEY": 11,
-      "COW": 4,
-      "HORSE": 4,
+      "DONKEY": 9,
+      "COW": 5,
+      "HORSE": 5,
       "LAMA": 6,
-      "CHICKEN": 6,
+      "CHICKEN": 5,
       "PIG": 5,
-      "GOAT": 4
+      "GOAT": 5
     },
     "MarketStalls": [
-      "CHICKEN",
       "HORSE",
-      "PIG",
+      "GOAT",
       "CHICKEN",
-      "COW"
+      "CHICKEN",
+      "GOAT"
     ]
   },
   "Castle": {
@@ -97,19 +97,19 @@
   },
   "Player1": {
     "Animals": [
-      "GOAT",
-      "GOAT",
-      "COW",
       "CHICKEN",
-      "CHICKEN"
+      "GOAT",
+      "DONKEY",
+      "PIG",
+      "COW"
     ]
   },
   "Player2": {
     "Animals": [
-      "GOAT",
-      "GOAT",
+      "CHICKEN",
+      "CHICKEN",
+      "DONKEY",
       "PIG",
-      "HORSE",
       "PIG"
     ]
   }

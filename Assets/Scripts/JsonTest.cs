@@ -11,15 +11,17 @@ public class JsonTest : MonoBehaviour, App42CallBack {
 	void Start () {
 
 		GameBoard board = new GameBoard ();
-		StreamReader reader = new StreamReader (Application.dataPath + "/market.json");
+		StreamReader reader = new StreamReader (Application.dataPath + "/new_game.json");
 		
 		JsonSerializer js = new JsonSerializer ();
 		JsonTextReader jreader = new JsonTextReader (reader);
 		board = (GameBoard)js.Deserialize (jreader, typeof(GameBoard));
 		reader.Close();
+
 		Debug.Log (board);
 		Debug.Log (board.Market.MarketStack);
 		Debug.Log ("market count: " + board.Market.MarketStack.Count);
+
 		foreach(KeyValuePair<AnimalSpecie, int> item in board.Market.MarketStack)
 		{
 			Debug.Log(item.Key + " : " + item.Value);
@@ -27,6 +29,7 @@ public class JsonTest : MonoBehaviour, App42CallBack {
 
 		Debug.Log ("castle : " + board.Castle);
 		Debug.Log ("castle count : " + board.Castle.TokenStack.Count);
+
 		foreach(KeyValuePair<TokenType, int[]> item in board.Castle.TokenStack)
 		{
 			Debug.Log(item.Key + " : " + item.Value[0]);
@@ -46,7 +49,7 @@ public class JsonTest : MonoBehaviour, App42CallBack {
 
 
 		NetworkService service = new NetworkService ();
-		service.StorageService.InsertJSONDocument ("FRIENDS", "tom's games", json, this);
+		//service.StorageService.InsertJSONDocument ("FRIENDS", "tom's games", json, this);
 
 
 
