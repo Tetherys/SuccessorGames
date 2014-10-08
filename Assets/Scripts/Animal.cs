@@ -1,13 +1,19 @@
 using UnityEngine;
 
 
-public class Animal
+public class Animal : MonoBehaviour
 {
 	private AnimalSpecie specie;
 	private AnimalType type;
 
-	public Animal ()
+	void OnStart() 
 	{
+
+	}
+
+	void OnUpdate()
+	{
+
 	}
 
 	public AnimalSpecie Specie {

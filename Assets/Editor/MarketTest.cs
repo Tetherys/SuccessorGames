@@ -3,6 +3,7 @@ using NUnit.Framework;
 
 public class MarketTest 
 {
+	/*
 	[Test]
 	public void InitializeTest ()
 	{
@@ -30,6 +31,7 @@ public class MarketTest
 		Assert.AreEqual (market.Animals.Count, 49);
 
 	}
+	
 
 	private Market CreateTestMarket()
 	{
@@ -51,4 +53,5 @@ public class MarketTest
 		marketStack.Add (AnimalSpecie.PIG, 8);
 		return marketStack;
 	}
+	*/
 }

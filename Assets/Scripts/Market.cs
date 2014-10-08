@@ -2,18 +2,36 @@
 using System.Collections.Generic;
 using System;
 using Newtonsoft.Json;
+using System.IO;
 
-public class Market{
+public class Market: MonoBehaviour{
 
 	private const int MARKET_STALLS_SIZE = 5;
 
 	private Dictionary<AnimalSpecie, int> marketStack;
-	private AnimalSpecie[] marketStalls;
+	public MarketStall[] marketStalls;
 	private List<AnimalSpecie> animals;
+
+	void Start()
+	{
+		Debug.Log ("start");
+		Initialize ();
+	}
 
 	public void Initialize()
 	{
+		Debug.Log ("initialize");
 		animals = new List<AnimalSpecie> ();
+		if(marketStack == null)
+		{
+			StreamReader reader = new StreamReader (Application.dataPath + "/test.json");
+			
+			JsonSerializer js = new JsonSerializer ();
+			JsonTextReader jreader = new JsonTextReader (reader);
+			marketStack = (Dictionary<AnimalSpecie, int>)js.Deserialize (jreader, typeof(Dictionary<AnimalSpecie, int>));
+			reader.Close();
+		}
+
 		if(marketStack != null)
 		{
 			foreach(KeyValuePair<AnimalSpecie, int> item in marketStack)
@@ -23,18 +41,22 @@ public class Market{
 					animals.Add(item.Key);
 				}
 			}
+			Debug.Log(animals.Count);
 		}
 		ShuffleAnimals ();
 
-		if(marketStalls == null)
+		foreach (MarketStall stall in marketStalls)
 		{
-			marketStalls = new AnimalSpecie[MARKET_STALLS_SIZE];
-			for(int j = 0; j < MARKET_STALLS_SIZE; j++)
+			if (stall.Animal == null)
 			{
-				marketStalls[j] = AnimalSpecie.NONE;
+				GameObject go = new AnimalFactory ().CreateAnimal (GiveSingleAnimal());
+				Transform t = go.transform;
+				t.parent = stall.transform;
+				t.localPosition = Vector3.zero;
+				t.localRotation = Quaternion.identity;
 			}
-			FillEmptyMarketStalls();
 		}
+
 	}
 
 	public AnimalSpecie GiveSingleAnimal()
@@ -58,16 +80,7 @@ public class Market{
 		}  
 	}
 
-	private void FillEmptyMarketStalls()
-	{
-		for(int i = 0; i < MARKET_STALLS_SIZE; i++)
-		{
-			if(marketStalls[i] == AnimalSpecie.NONE)
-			{
-				marketStalls[i] = GiveSingleAnimal();
-			}
-		}
-	}
+
 
 	public Dictionary<AnimalSpecie, int> MarketStack {
 		get {
@@ -77,15 +90,7 @@ public class Market{
 			marketStack = value;
 		}
 	}
-	
-	public AnimalSpecie[] MarketStalls {
-		get {
-			return this.marketStalls;
-		}
-		set {
-			marketStalls = value;
-		}
-	}
+
 
 	[JsonIgnore]
 	public List<AnimalSpecie> Animals {

@@ -19,13 +19,6 @@ public class JsonTest : MonoBehaviour, App42CallBack {
 		reader.Close();
 
 		Debug.Log (board);
-		Debug.Log (board.Market.MarketStack);
-		Debug.Log ("market count: " + board.Market.MarketStack.Count);
-
-		foreach(KeyValuePair<AnimalSpecie, int> item in board.Market.MarketStack)
-		{
-			Debug.Log(item.Key + " : " + item.Value);
-		}
 
 		Debug.Log ("castle : " + board.Castle);
 		Debug.Log ("castle count : " + board.Castle.TokenStack.Count);
@@ -51,9 +44,6 @@ public class JsonTest : MonoBehaviour, App42CallBack {
 		NetworkService service = new NetworkService ();
 		//service.StorageService.InsertJSONDocument ("FRIENDS", "tom's games", json, this);
 
-
-
-		Debug.Log (board.Market.Animals.Count);
 
 	}
 	

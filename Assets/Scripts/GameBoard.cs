@@ -10,7 +10,7 @@ public class GameBoard {
 	private string player1Username, player2Username;
 	private int turn;
 
-	private Market market;
+	//private Market market;
 	private Castle castle;
 	private PlayerCart player1, player2;
 
@@ -18,7 +18,7 @@ public class GameBoard {
 	{
 		player1 = new PlayerCart ();
 		player2 = new PlayerCart ();
-		market.Initialize ();
+		//market.Initialize ();
 		if (state == GameState.NEW_GAME) 
 		{
 			DealStartingAnimals(player1);
@@ -31,7 +31,7 @@ public class GameBoard {
 		List<AnimalSpecie> animals = new List<AnimalSpecie> ();		
 		for(int i = 0; i < STARTING_NUMBER_OF_ANIMALS; i++)
 		{
-			animals.Add(market.GiveSingleAnimal());
+			//animals.Add(market.GiveSingleAnimal());
 		}
 		cart.Animals = animals;
 	}
@@ -73,7 +73,7 @@ public class GameBoard {
 			turn = value;
 		}
 	}
-
+	/*
 	public Market Market {
 		get {
 			return this.market;
@@ -82,7 +82,7 @@ public class GameBoard {
 			market = value;
 		}
 	}
-
+*/
 	public Castle Castle {
 		get {
 			return this.castle;
