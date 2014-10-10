@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class Animal : MonoBehaviour
 {
-	private AnimalSpecie specie;
-	private AnimalType type;
+	public AnimalSpecie specie;
+	public AnimalType type;
 
 	void OnStart() 
 	{
@@ -15,23 +15,6 @@ public class Animal : MonoBehaviour
 	{
 
 	}
-
-	public AnimalSpecie Specie {
-		get {
-			return this.specie;
-		}
-		set {
-			specie = value;
-		}
-	}
-
-	public AnimalType Type {
-		get {
-			return this.type;
-		}
-		set {
-			type = value;
-		}
-	}
+	
 }
 

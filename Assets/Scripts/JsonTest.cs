@@ -10,25 +10,20 @@ public class JsonTest : MonoBehaviour, App42CallBack {
 	// Use this for initialization
 	void Start () {
 
-		GameBoard board = new GameBoard ();
-		StreamReader reader = new StreamReader (Application.dataPath + "/new_game.json");
-		
-		JsonSerializer js = new JsonSerializer ();
-		JsonTextReader jreader = new JsonTextReader (reader);
-		board = (GameBoard)js.Deserialize (jreader, typeof(GameBoard));
-		reader.Close();
+		GameBoardState board = new GameBoardState ();
+		TextAsset boardstate = (TextAsset)Resources.Load ("new_game");
+		string text = boardstate.text;
+		board = (GameBoardState)JsonConvert.DeserializeObject<GameBoardState> (text);
 
-		Debug.Log (board);
+		Debug.Log (board.State);;
+		Debug.Log ("castle count : " + board.TokenStack.Count);
 
-		Debug.Log ("castle : " + board.Castle);
-		Debug.Log ("castle count : " + board.Castle.TokenStack.Count);
-
-		foreach(KeyValuePair<TokenType, int[]> item in board.Castle.TokenStack)
+		foreach(KeyValuePair<TokenType, int[]> item in board.TokenStack)
 		{
 			Debug.Log(item.Key + " : " + item.Value[0]);
 		}
 
-		board.Initialize ();
+
 
 		string json = JsonConvert.SerializeObject (board, Formatting.Indented, 
 		                                           new JsonSerializerSettings { 

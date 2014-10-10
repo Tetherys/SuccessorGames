@@ -9,28 +9,19 @@ public class Market: MonoBehaviour{
 	private const int MARKET_STALLS_SIZE = 5;
 
 	private Dictionary<AnimalSpecie, int> marketStack;
-	public MarketStall[] marketStalls;
+	public SingleStall[] marketStalls;
 	private List<AnimalSpecie> animals;
 
 	void Start()
 	{
-		Debug.Log ("start");
-		Initialize ();
+
 	}
 
-	public void Initialize()
+	public void Initialize(Dictionary<AnimalSpecie, int> marketStack, List<AnimalSpecie> marketStalls)
 	{
-		Debug.Log ("initialize");
+		this.marketStack = marketStack;
+
 		animals = new List<AnimalSpecie> ();
-		if(marketStack == null)
-		{
-			StreamReader reader = new StreamReader (Application.dataPath + "/test.json");
-			
-			JsonSerializer js = new JsonSerializer ();
-			JsonTextReader jreader = new JsonTextReader (reader);
-			marketStack = (Dictionary<AnimalSpecie, int>)js.Deserialize (jreader, typeof(Dictionary<AnimalSpecie, int>));
-			reader.Close();
-		}
 
 		if(marketStack != null)
 		{
@@ -41,25 +32,27 @@ public class Market: MonoBehaviour{
 					animals.Add(item.Key);
 				}
 			}
-			Debug.Log(animals.Count);
 		}
 		ShuffleAnimals ();
 
-		foreach (MarketStall stall in marketStalls)
+		foreach (SingleStall stall in this.marketStalls)
 		{
 			if (stall.Animal == null)
 			{
-				GameObject go = new AnimalFactory ().CreateAnimal (GiveSingleAnimal());
+				GameObject go = new AnimalFactory ().CreateAnimal (GiveSingleAnimalFromStack());
 				Transform t = go.transform;
 				t.parent = stall.transform;
 				t.localPosition = Vector3.zero;
 				t.localRotation = Quaternion.identity;
+
+				Animal animal = go.GetComponent<Animal>();
+				stall.Animal = animal;
 			}
 		}
 
 	}
 
-	public AnimalSpecie GiveSingleAnimal()
+	public AnimalSpecie GiveSingleAnimalFromStack()
 	{
 		AnimalSpecie specie = animals [0];
 		marketStack [specie] -= 1;
@@ -80,7 +73,15 @@ public class Market: MonoBehaviour{
 		}  
 	}
 
-
+	public List<AnimalSpecie> GetAnimalSpeciesInMarketStalls()
+	{
+		List<AnimalSpecie> market = new List<AnimalSpecie> ();
+		foreach(SingleStall stall in this.marketStalls)
+		{
+			market.Add(stall.Animal.specie);
+		}
+		return market;
+	}
 
 	public Dictionary<AnimalSpecie, int> MarketStack {
 		get {
@@ -91,8 +92,6 @@ public class Market: MonoBehaviour{
 		}
 	}
 
-
-	[JsonIgnore]
 	public List<AnimalSpecie> Animals {
 		get {
 			return this.animals;
