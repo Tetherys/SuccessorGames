@@ -12,7 +12,13 @@ public class SingleStall : Stall {
 		}
 		set {
 			animal = value;
+			if(animal != null)
+			{
+				Transform t = animal.transform;
+				t.parent = this.transform;
+				t.localPosition = Vector3.zero;
+				t.localRotation = Quaternion.identity;
+			}
 		}
 	}
-
 }

@@ -1,0 +1,129 @@
+fileFormatVersion: 2
+guid: 8edeb0a12cdffdb40bb00ff26cacc3d3
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: Animals
+    21300002: Horse
+    21300004: Cow
+    21300006: Lama
+    21300008: Donkey
+    21300010: Goat
+    21300012: Chicken
+    21300014: Pig
+  serializedVersion: 2
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    linearTexture: 0
+    correctGamma: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: .25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 0
+  seamlessCubemap: 0
+  textureFormat: -1
+  maxTextureSize: 1024
+  textureSettings:
+    filterMode: 0
+    aniso: 1
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: .5, y: .5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 1
+  alphaIsTransparency: 1
+  textureType: 8
+  buildTargetSettings:
+  - buildTarget: Android
+    maxTextureSize: 1024
+    textureFormat: -3
+    compressionQuality: 50
+  spriteSheet:
+    sprites:
+    - name: Horse
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 189
+        width: 123
+        height: 107
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Cow
+      rect:
+        serializedVersion: 2
+        x: 123
+        y: 194
+        width: 117
+        height: 102
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Lama
+      rect:
+        serializedVersion: 2
+        x: 240
+        y: 159
+        width: 119
+        height: 137
+      alignment: 9
+      pivot: {x: .515468836, y: .343241125}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Donkey
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 80
+        width: 131
+        height: 108
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Goat
+      rect:
+        serializedVersion: 2
+        x: 133
+        y: 88
+        width: 116
+        height: 105
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Chicken
+      rect:
+        serializedVersion: 2
+        x: 258
+        y: 83
+        width: 66
+        height: 73
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: Pig
+      rect:
+        serializedVersion: 2
+        x: 2
+        y: 2
+        width: 156
+        height: 76
+      alignment: 0
+      pivot: {x: .5, y: .5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+  spritePackingTag: 
+  userData: 

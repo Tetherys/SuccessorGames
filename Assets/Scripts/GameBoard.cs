@@ -8,8 +8,9 @@ public class GameBoard : MonoBehaviour {
 	private const int STARTING_NUMBER_OF_ANIMALS = 5;
 
 	public Market market;
+	public Castle castle;
 	public PlayerArea playerArea;
-	public Area opponentArea;
+	public MultiStall opponentArea;
 	private GameBoardState boardState;
 
 	void Start()
@@ -23,6 +24,7 @@ public class GameBoard : MonoBehaviour {
 	{
 		this.boardState = state;
 		market.Initialize(boardState.MarketStack, boardState.MarketStalls);
+		castle.TokenStack = state.TokenStack;
 
 		if(boardState.State == GameState.NEW_GAME)
 		{
@@ -30,7 +32,6 @@ public class GameBoard : MonoBehaviour {
 			boardState.Player2Animals = this.DealStartingAnimals();
 		}
 		playerArea.Initialize (boardState.Player1Animals);
-		opponentArea.Initialize (boardState.Player2Animals);
 
 		WriteGameBoardStateToFile ();
 	}
@@ -40,7 +41,7 @@ public class GameBoard : MonoBehaviour {
 		List<AnimalSpecie> animals = new List<AnimalSpecie> ();		
 		for(int i = 0; i < STARTING_NUMBER_OF_ANIMALS; i++)
 		{
-			animals.Add(market.GiveSingleAnimalFromStack());
+			animals.Add(market.GiveSingleAnimalSpecieFromStack());
 		}
 		return animals;
 	}
@@ -48,6 +49,11 @@ public class GameBoard : MonoBehaviour {
 	public void WriteGameBoardStateToFile()
 	{
 		boardState.MarketStalls = market.GetAnimalSpeciesInMarketStalls ();
+		boardState.Player1Animals = playerArea.GetAnimalSpeciesInPlayerStalls ();
+
+
+
+
 		string json = JsonConvert.SerializeObject (this.boardState, Formatting.Indented, 
 		                                           new JsonSerializerSettings { 
 			NullValueHandling = NullValueHandling.Ignore,
@@ -57,6 +63,40 @@ public class GameBoard : MonoBehaviour {
 			}
 		});
 		File.WriteAllText (Application.dataPath + "/test.json", json);
+	}
+
+	public void OnTakeDonkeysButtonClicked()
+	{
+		playerArea.AddAnimalsToStalls(market.GetAnimalsBySpecie (AnimalSpecie.DONKEY));
+		market.PopulateMarketStalls (null);
+		WriteGameBoardStateToFile ();
+	}
+
+	public void OnTakeAnimalButtonClicked()
+	{
+		playerArea.AddAnimalsToStalls (market.GetSelectedAnimals());
+		market.PopulateMarketStalls (null);
+		WriteGameBoardStateToFile ();
+	}
+
+	public void OnTradeAnimalsButtonClicked()
+	{
+		List<Animal> selectedMarketAnimals = market.GetSelectedAnimals ();
+		Debug.Log (selectedMarketAnimals.Count);
+	
+		List<Animal> selectedPlayerAnimals = playerArea.GetSelectedAnimals (selectedMarketAnimals.Count);
+
+		Debug.Log (selectedPlayerAnimals.Count);
+		market.PopulateMarketStalls (selectedPlayerAnimals);
+		playerArea.AddAnimalsToStalls (selectedMarketAnimals);
+		WriteGameBoardStateToFile ();
+	}
+
+	public void OnAnimalsForTokensButtonClicked()
+	{
+		List<Animal> selectedPlayerAnimals = playerArea.GetSelectedAnimals (0);
+		boardState.Player1Tokens  = castle.TradeAnimalsForTokens (selectedPlayerAnimals);
+		WriteGameBoardStateToFile ();
 	}
 
 #region Properties

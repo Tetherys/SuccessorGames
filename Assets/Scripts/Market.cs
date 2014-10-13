@@ -6,17 +6,10 @@ using System.IO;
 
 public class Market: MonoBehaviour{
 
-	private const int MARKET_STALLS_SIZE = 5;
-
 	private Dictionary<AnimalSpecie, int> marketStack;
 	public SingleStall[] marketStalls;
 	private List<AnimalSpecie> animals;
-
-	void Start()
-	{
-
-	}
-
+	
 	public void Initialize(Dictionary<AnimalSpecie, int> marketStack, List<AnimalSpecie> marketStalls)
 	{
 		this.marketStack = marketStack;
@@ -35,29 +28,73 @@ public class Market: MonoBehaviour{
 		}
 		ShuffleAnimals ();
 
+		PopulateMarketStalls (null);
+
+	}
+
+	public Animal GiveSingleAnimalFromStack()
+	{
+		Animal animal = new AnimalFactory ().CreateAnimal (GiveSingleAnimalSpecieFromStack()).GetComponent<Animal>();
+		return animal;
+	}
+
+	public AnimalSpecie GiveSingleAnimalSpecieFromStack()
+	{
+		AnimalSpecie specie =  this.animals[0];
+		marketStack [specie] -= 1;
+		animals.RemoveAt (0);
+		return specie;
+	}
+
+	public List<Animal> GetSelectedAnimals()
+	{
+		List<Animal> selectedAnimals = new List<Animal> ();
+		foreach(SingleStall stall in marketStalls)
+		{
+			if(stall.Selected)
+			{
+				selectedAnimals.Add(stall.Animal);
+				stall.Selected = !stall.Selected;
+				stall.Animal = null;
+			}
+		}
+		return selectedAnimals;
+	}
+
+	public List<Animal> GetAnimalsBySpecie(AnimalSpecie specie)
+	{
+		List<Animal> animalsBySpecie = new List<Animal>();
+		foreach (SingleStall stall in this.marketStalls)
+		{
+			if (stall.Animal != null)
+			{
+				if(stall.Animal.specie == specie)
+				{
+					animalsBySpecie.Add(stall.Animal);
+					stall.Animal = null;
+				}
+			}
+		}
+		return animalsBySpecie;
+	}
+
+	public void PopulateMarketStalls(List<Animal> animals)
+	{
 		foreach (SingleStall stall in this.marketStalls)
 		{
 			if (stall.Animal == null)
 			{
-				GameObject go = new AnimalFactory ().CreateAnimal (GiveSingleAnimalFromStack());
-				Transform t = go.transform;
-				t.parent = stall.transform;
-				t.localPosition = Vector3.zero;
-				t.localRotation = Quaternion.identity;
-
-				Animal animal = go.GetComponent<Animal>();
-				stall.Animal = animal;
+				if(animals == null)
+				{
+					stall.Animal = GiveSingleAnimalFromStack();
+				}
+				else
+				{
+					stall.Animal = animals[0];
+					animals.RemoveAt(0);
+				}
 			}
 		}
-
-	}
-
-	public AnimalSpecie GiveSingleAnimalFromStack()
-	{
-		AnimalSpecie specie = animals [0];
-		marketStack [specie] -= 1;
-		animals.RemoveAt (0);
-		return specie;
 	}
 
 	private void ShuffleAnimals()

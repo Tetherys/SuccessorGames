@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class MultiStall : MonoBehaviour {
+public class MultiStall : Stall {
 
 	private List<Animal> animals;
 
@@ -24,5 +24,20 @@ public class MultiStall : MonoBehaviour {
 		set {
 			animals = value;
 		}
+	}
+
+	public void AddAnimal(Animal animal)
+	{
+		Transform t = animal.transform;
+		t.parent = this.transform;
+		
+		float x = -50 + (float)this.Animals.Count * 25;
+		
+		t.localPosition = new Vector3(x,0,0);
+		t.localRotation = Quaternion.identity;
+
+		animal.GetComponent<SpriteRenderer> ().sortingOrder = this.Animals.Count;
+		
+		this.Animals.Add(animal);
 	}
 }

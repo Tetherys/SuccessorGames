@@ -2,12 +2,13 @@
 	"state" : "NEW_GAME",
 	"marketStack" :
 	{
-		"DONKEY" : "11",
-		"COW" : "6",
-		"HORSE" : "6",
-		"LAMA" : "6",
-		"CHICKEN" : "10",
-		"PIG" : "8",
+		"DONKEY" : 11,
+		"COW" : 6,
+		"HORSE" : 6,
+		"LAMA" : 6,
+		"CHICKEN" : 10,
+		"PIG" : 8,
+		"GOAT" : 8
 	},
 
 	"tokenStack" :

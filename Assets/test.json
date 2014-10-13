@@ -2,33 +2,35 @@
   "State": "NEW_GAME",
   "Turn": 0,
   "MarketStack": {
-    "DONKEY": 8,
+    "DONKEY": 5,
     "COW": 5,
-    "HORSE": 4,
+    "HORSE": 6,
     "LAMA": 3,
-    "CHICKEN": 6,
-    "PIG": 6
+    "CHICKEN": 8,
+    "PIG": 5,
+    "GOAT": 5
   },
   "MarketStalls": [
+    "DONKEY",
+    "DONKEY",
     "LAMA",
-    "CHICKEN",
-    "LAMA",
-    "CHICKEN",
-    "DONKEY"
+    "GOAT",
+    "GOAT"
   ],
   "Player1Animals": [
+    "LAMA",
     "COW",
+    "GOAT",
     "DONKEY",
-    "PIG",
-    "CHICKEN",
-    "CHICKEN"
+    "DONKEY",
+    "DONKEY"
   ],
   "Player2Animals": [
-    "DONKEY",
+    "CHICKEN",
     "LAMA",
-    "HORSE",
-    "HORSE",
-    "PIG"
+    "PIG",
+    "CHICKEN",
+    "DONKEY"
   ],
   "TokenStack": {
     "COW": [
@@ -64,8 +66,6 @@
       1
     ],
     "PIG": [
-      5,
-      3,
       2,
       2,
       1,
@@ -103,5 +103,15 @@
       8,
       8
     ]
-  }
+  },
+  "Player1Tokens": [
+    {
+      "Type": "PIG",
+      "Value": 5
+    },
+    {
+      "Type": "PIG",
+      "Value": 3
+    }
+  ]
 }
