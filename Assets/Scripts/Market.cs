@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-using System;
+using System.Linq;
 using Newtonsoft.Json;
 using System.IO;
 
 public class Market: MonoBehaviour{
 
 	private Dictionary<AnimalSpecie, int> marketStack;
-	public SingleStall[] marketStalls;
+	public StallManager stallManager;
 	private List<AnimalSpecie> animals;
 	
 	public void Initialize(Dictionary<AnimalSpecie, int> marketStack, List<AnimalSpecie> marketStalls)
@@ -48,39 +48,18 @@ public class Market: MonoBehaviour{
 
 	public List<Animal> GetSelectedAnimals()
 	{
-		List<Animal> selectedAnimals = new List<Animal> ();
-		foreach(SingleStall stall in marketStalls)
-		{
-			if(stall.Selected)
-			{
-				selectedAnimals.Add(stall.Animal);
-				stall.Selected = !stall.Selected;
-				stall.Animal = null;
-			}
-		}
-		return selectedAnimals;
+		return stallManager.GetAnimalsInSelectedStalls ();
 	}
 
 	public List<Animal> GetAnimalsBySpecie(AnimalSpecie specie)
 	{
-		List<Animal> animalsBySpecie = new List<Animal>();
-		foreach (SingleStall stall in this.marketStalls)
-		{
-			if (stall.Animal != null)
-			{
-				if(stall.Animal.specie == specie)
-				{
-					animalsBySpecie.Add(stall.Animal);
-					stall.Animal = null;
-				}
-			}
-		}
-		return animalsBySpecie;
+		List<Animal> animals = stallManager.GetAnimalsInStallsBySpecie (specie);
+		return animals;
 	}
 
 	public void PopulateMarketStalls(List<Animal> animals)
 	{
-		foreach (SingleStall stall in this.marketStalls)
+		foreach (SingleStall stall in stallManager.GetEmptyStalls())
 		{
 			if (stall.Animal == null)
 			{
@@ -111,13 +90,8 @@ public class Market: MonoBehaviour{
 	}
 
 	public List<AnimalSpecie> GetAnimalSpeciesInMarketStalls()
-	{
-		List<AnimalSpecie> market = new List<AnimalSpecie> ();
-		foreach(SingleStall stall in this.marketStalls)
-		{
-			market.Add(stall.Animal.specie);
-		}
-		return market;
+	{ 
+		return stallManager.GetAnimalSpecieFromAnimalsInStalls ();
 	}
 
 	public Dictionary<AnimalSpecie, int> MarketStack {

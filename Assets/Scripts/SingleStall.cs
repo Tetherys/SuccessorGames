@@ -14,10 +14,16 @@ public class SingleStall : Stall {
 			animal = value;
 			if(animal != null)
 			{
+				CanBeSelected = true;
 				Transform t = animal.transform;
 				t.parent = this.transform;
 				t.localPosition = Vector3.zero;
 				t.localRotation = Quaternion.identity;
+			}
+			else
+			{
+				CanBeSelected = false;
+				Selected = false;
 			}
 		}
 	}

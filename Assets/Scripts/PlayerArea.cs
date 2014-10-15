@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class PlayerArea : MonoBehaviour {
 
-	public SingleStall[] playerStalls;
+	public StallManager playerStalls;
 	public MultiStall donkeyHerd;
 
 	public void Initialize(List<AnimalSpecie> animals)
@@ -11,11 +11,11 @@ public class PlayerArea : MonoBehaviour {
 		foreach(AnimalSpecie specie in animals)
 		{
 			Animal animal = new AnimalFactory().CreateAnimal(specie).GetComponent<Animal>();
-			this.AddAnimalToStalls(animal);
+			this.AddAnimalToPlayerArea(animal);
 		}
 	}
 
-	public void AddAnimalToStalls(Animal animal)
+	public void AddAnimalToPlayerArea(Animal animal)
 	{
 		if(animal.specie == AnimalSpecie.DONKEY)
 		{
@@ -23,45 +23,25 @@ public class PlayerArea : MonoBehaviour {
 		}
 		else
 		{
-			SingleStall stall = this.GetEmptyStall ();
-			
-			if(stall != null)
-			{
-				stall.Animal = animal;
-			}
+			playerStalls.AddAnimalToStalls(animal);
 		}
 	}
 
-	public void AddAnimalsToStalls(List<Animal> animals)
+	public void AddAnimalsToPlayerArea(List<Animal> animals)
 	{
-		foreach(Animal animal in animals)
-		{
-			this.AddAnimalToStalls(animal);
-		}
+		animals.ForEach (animal => this.AddAnimalToPlayerArea(animal));
 	}
 
 	public List<Animal> GetSelectedAnimals(int maxSize)
 	{
-		List<Animal> selectedAnimals = new List<Animal> ();
-		foreach(SingleStall stall in playerStalls)
-		{
-			if(stall.Selected)
-			{
-				selectedAnimals.Add(stall.Animal);
-				stall.Selected = !stall.Selected;
-				stall.Animal = null;
-			}
-		}
+		List<Animal> selectedAnimals = playerStalls.GetAnimalsInSelectedStalls ();
 		if(selectedAnimals.Count < maxSize)
 		{
-			Debug.Log("adding donkeys");
 			if(donkeyHerd.Selected)
 			{
 				for(int i = selectedAnimals.Count; i < maxSize; i++)
 				{
-					selectedAnimals.Add(donkeyHerd.Animals[donkeyHerd.Animals.Count - 1]);
-					donkeyHerd.Animals.RemoveAt(donkeyHerd.Animals.Count - 1);
-					Debug.Log("added donkey");
+					selectedAnimals.Add(donkeyHerd.GetAnimal ());
 				}
 				donkeyHerd.Selected = !donkeyHerd.Selected;
 			}
@@ -72,30 +52,18 @@ public class PlayerArea : MonoBehaviour {
 
 	public List<AnimalSpecie> GetAnimalSpeciesInPlayerStalls()
 	{
-		List<AnimalSpecie> market = new List<AnimalSpecie> ();
-		foreach(SingleStall stall in this.playerStalls)
-		{
-			if(stall.Animal != null)
-				market.Add(stall.Animal.specie);
-		}
-		foreach(Animal animal in donkeyHerd.Animals)
-		{
-			market.Add (AnimalSpecie.DONKEY);
-		}
-
+		List<AnimalSpecie> market = playerStalls.GetAnimalSpecieFromAnimalsInStalls ();
+		donkeyHerd.Animals.ForEach (animal => market.Add(AnimalSpecie.DONKEY));
 		return market;
 	}
 
-
-	private SingleStall GetEmptyStall()
+	public bool AnythingSelectedInPlayerArea()
 	{
-		foreach(SingleStall stall in playerStalls)
+		if(playerStalls.GetNumberOfSelectedStalls() == 0 && !donkeyHerd.Selected)
 		{
-			if(stall.Animal == null)
-			{
-				return stall;
-			}
+			return true;
 		}
-		return null;
+		return false;
 	}
+	
 }
